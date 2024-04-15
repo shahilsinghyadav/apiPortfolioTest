@@ -20,7 +20,7 @@ app.post('/calculate_portfolio', upload.single('file'), (req, res) => {
             const portfolioValues = [];
             results.forEach((row) => {
                 if (row.top_10.length === 2) {
-                    portfolioValues.push(1000); // Set slot value to 1000 if arrays are empty
+                    portfolioValues.push(1000); 
                 } else { 
                row.top_10 = JSON.parse(row.top_10.replace(/'/g, '"'));
                row.percent_change_values = JSON.parse(row.percent_change_values);
