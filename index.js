@@ -19,17 +19,21 @@ app.post('/calculate_portfolio', upload.single('file'), (req, res) => {
         .on('end', () => { 
             const portfolioValues = [];
             results.forEach((row) => {
-                
+                if (row.top_10.length === 2) {
+                    portfolioValues.push(1000); // Set slot value to 1000 if arrays are empty
+                } else { 
                row.top_10 = JSON.parse(row.top_10.replace(/'/g, '"'));
                row.percent_change_values = JSON.parse(row.percent_change_values);
                 
                 let slotValues = [100]; 
-                
+                //if(row.top_10.size==0){slotValues =  1000}
                 row.top_10.forEach((stock, i) => {
                    slotValues.push(slotValues[i] * (1 + row.percent_change_values[i] / 100));
                 });
                 portfolioValues.push(slotValues.reduce((a, b) => a + b, 0));
+            }
             });
+        
             const x = results.map((row) => row.datetime);
             plot([
                 {
