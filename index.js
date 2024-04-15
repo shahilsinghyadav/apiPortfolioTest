@@ -17,12 +17,11 @@ app.post('/calculate_portfolio', upload.single('file'), (req, res) => {
         .pipe(csv())
         .on('data', (data) => results.push(data))
         .on('end', () => { 
-
             const portfolioValues = [];
             results.forEach((row) => {
                 
-                row.top_10 = JSON.parse(row.top_10.replace(/'/g, '"'));
-                row.percent_change_values = JSON.parse(row.percent_change_values);
+               row.top_10 = JSON.parse(row.top_10.replace(/'/g, '"'));
+               row.percent_change_values = JSON.parse(row.percent_change_values);
                 
                 let slotValues = [100]; 
                 
@@ -37,10 +36,16 @@ app.post('/calculate_portfolio', upload.single('file'), (req, res) => {
                     x: x,
                     y: portfolioValues,
                     type: 'line',
-                    marker: { color: 'blue' },
+                    marker: { color: 'green' },
                 },
-            ]);
-
+            ], {
+                title: 'Portfolio Value Over Time',
+                xaxis: { title: 'Datetime' },
+                yaxis: { title: 'Portfolio Value' },
+                width: 1200,
+                height: 600,
+            });
+            
             res.json({ portfolioValues });
         });
 });
